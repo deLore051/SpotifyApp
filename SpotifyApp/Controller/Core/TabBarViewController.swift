@@ -10,7 +10,7 @@ import UIKit
 class TabBarViewController: UITabBarController {
 
     
-    
+    //MARK: - Lifecicle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,7 +39,6 @@ class TabBarViewController: UITabBarController {
         nav3.navigationBar.prefersLargeTitles = true
         
         setViewControllers([nav1, nav2, nav3], animated: false)
-        
     }
     
 
