@@ -29,6 +29,7 @@
 		7F835BB826B2EB3E008C6734 /* AudioTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F835BB726B2EB3E008C6734 /* AudioTrack.swift */; };
 		7F835BBA26B2EB48008C6734 /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F835BB926B2EB48008C6734 /* Artist.swift */; };
 		7F835BBC26B2EB55008C6734 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F835BBB26B2EB55008C6734 /* UserProfile.swift */; };
+		7F835BBE26B3094F008C6734 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F835BBD26B3094F008C6734 /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +57,7 @@
 		7F835BB726B2EB3E008C6734 /* AudioTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioTrack.swift; sourceTree = "<group>"; };
 		7F835BB926B2EB48008C6734 /* Artist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artist.swift; sourceTree = "<group>"; };
 		7F835BBB26B2EB55008C6734 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
+		7F835BBD26B3094F008C6734 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,6 +131,7 @@
 			children = (
 				7F835B7D26B2A779008C6734 /* AppDelegate.swift */,
 				7F835B7F26B2A779008C6734 /* SceneDelegate.swift */,
+				7F835BBD26B3094F008C6734 /* Extensions.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -261,6 +264,7 @@
 				7F835BA126B2EA7E008C6734 /* AuthViewController.swift in Sources */,
 				7F835B7E26B2A779008C6734 /* AppDelegate.swift in Sources */,
 				7F835BBC26B2EB55008C6734 /* UserProfile.swift in Sources */,
+				7F835BBE26B3094F008C6734 /* Extensions.swift in Sources */,
 				7F835B9D26B2EA25008C6734 /* LibraryViewController.swift in Sources */,
 				7F835BBA26B2EB48008C6734 /* Artist.swift in Sources */,
 				7F835BAB26B2EABC008C6734 /* PlaylistViewController.swift in Sources */,
