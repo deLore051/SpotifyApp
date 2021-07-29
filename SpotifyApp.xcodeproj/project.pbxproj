@@ -56,15 +56,47 @@
 		7F835B7C26B2A779008C6734 /* SpotifyApp */ = {
 			isa = PBXGroup;
 			children = (
-				7F835B7D26B2A779008C6734 /* AppDelegate.swift */,
-				7F835B7F26B2A779008C6734 /* SceneDelegate.swift */,
-				7F835B8126B2A779008C6734 /* ViewController.swift */,
-				7F835B8326B2A779008C6734 /* Main.storyboard */,
-				7F835B8626B2A77B008C6734 /* Assets.xcassets */,
-				7F835B8826B2A77B008C6734 /* LaunchScreen.storyboard */,
+				7F835B9426B2A7D2008C6734 /* Resources */,
+				7F835B9326B2A79B008C6734 /* Model */,
+				7F835B9226B2A797008C6734 /* View */,
+				7F835B9126B2A789008C6734 /* Controller */,
 				7F835B8B26B2A77B008C6734 /* Info.plist */,
 			);
 			path = SpotifyApp;
+			sourceTree = "<group>";
+		};
+		7F835B9126B2A789008C6734 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				7F835B8126B2A779008C6734 /* ViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		7F835B9226B2A797008C6734 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				7F835B8326B2A779008C6734 /* Main.storyboard */,
+				7F835B8626B2A77B008C6734 /* Assets.xcassets */,
+				7F835B8826B2A77B008C6734 /* LaunchScreen.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		7F835B9326B2A79B008C6734 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		7F835B9426B2A7D2008C6734 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				7F835B7D26B2A779008C6734 /* AppDelegate.swift */,
+				7F835B7F26B2A779008C6734 /* SceneDelegate.swift */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
