@@ -10,6 +10,8 @@ import Foundation
 final class AuthManager {
     static let shared = AuthManager()
     
+    private var refreshingToken = false
+    
     //MARK: - Init
     
     private init() { }
@@ -28,6 +30,7 @@ final class AuthManager {
         return URL(string: url)
     }
     
+    /// Use the code we get when we are signing in the app to exchange for a token
     public func excangeCodeForToken(code: String, completion: @escaping ((Bool) -> Void)) {
         // Get token
         guard let url = URL(string: Constants.tokenAPIurl) else { return }
@@ -73,15 +76,40 @@ final class AuthManager {
         task.resume()
     }
     
-    public func refreshIfNeeded(completion: @escaping ((Bool) -> Void)) {
-//        guard shouldRefreshToken else {
-//            completion(true)
-//            return
-//        }
+    private var onRefreshBlocks = [((String) -> Void)]()
+    
+    /// Check if token is still valid before further usage with API Calls
+    public func withValidToken(completion: @escaping (String) -> Void) {
+        guard !refreshingToken else {
+            // Append the completion
+            onRefreshBlocks.append(completion)
+            return
+        }
+        if shouldRefreshToken {
+            // Refresh
+            refreshIfNeeded { [weak self] success in
+                guard let self = self else { return }
+                guard success, let token = self.accessToken else { return }
+                completion(token)
+            }
+        } else if let token = accessToken {
+            completion(token)
+        }
+    }
+    
+    /// Refresh access token few minutes before it expires so we dont start the process with dead token
+    public func refreshIfNeeded(completion: ((Bool) -> Void)?) {
+        guard !refreshingToken else { return }
+        guard shouldRefreshToken else {
+            completion?(true)
+            return
+        }
         guard let refreshToken = self.refreshToken else { return }
         
         // Refresh the token
         guard let url = URL(string: Constants.tokenAPIurl) else { return }
+        
+        refreshingToken = true
         
         var components = URLComponents()
         components.queryItems = [
@@ -98,7 +126,7 @@ final class AuthManager {
         let data = basicToken.data(using: .utf8)
         guard let base64String = data?.base64EncodedString() else {
             print("Faliure to get base64")
-            completion(false)
+            completion?(false)
             return
         }
         
@@ -106,24 +134,27 @@ final class AuthManager {
         
         let task = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
             guard let self = self else { return }
+            self.refreshingToken = false
             guard let data = data, error == nil else {
-                completion(false)
+                completion?(false)
                 return
             }
             
             do {
                 let result = try JSONDecoder().decode(AuthResponse.self, from: data)
-                print("Successfuly refershed")
+                self.onRefreshBlocks.forEach { $0(result.access_token) }
+                self.onRefreshBlocks.removeAll()
                 self.cacheToken(result: result)
-                completion(true)
+                completion?(true)
             } catch {
                 print(error.localizedDescription)
-                completion(false)
+                completion?(false)
             }
         }
         task.resume()
     }
     
+    /// Cache the current access token for further usage
     private func cacheToken(result: AuthResponse) {
         UserDefaults.standard.setValue(result.access_token, forKey: "access_token")
         if let refresh_token = result.refresh_token {
@@ -133,22 +164,27 @@ final class AuthManager {
                                        forKey: "expirationDate")
     }
     
+    /// Return true or false depending if the user is signed in or not
     var isSingedIn: Bool {
         return accessToken != nil
     }
     
+    /// Access token we get when we sign in successfuly, it lasts 60 minutes before we need a new one
     private var accessToken: String? {
         return UserDefaults.standard.string(forKey: "access_token")
     }
     
+    /// Access token we get when we do a successful refresh with the current access token
     private var refreshToken: String? {
         return UserDefaults.standard.string(forKey: "refresh_token")
     }
     
+    /// Expiration date of the current access token
     private var tokenExpirationDate: Date? {
         return UserDefaults.standard.object(forKey: "expirationDate") as? Date
     }
     
+    /// Checks how much time our current token has before we should refresh it
     private var shouldRefreshToken: Bool {
         guard let expirationDate = tokenExpirationDate else { return false }
         let currentDate = Date()

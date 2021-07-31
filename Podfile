@@ -6,5 +6,9 @@ target 'SpotifyApp' do
   use_frameworks!
 
   # Pods for SpotifyApp
+  
+  pod 'SDWebImage'
+  pod 'Appirater'
+  pod 'Firebase/Analytics'
 
 end
