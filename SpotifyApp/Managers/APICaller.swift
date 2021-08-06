@@ -22,6 +22,7 @@ final class APICaller {
         static let recomendedGenresAPI = "recommendations/available-genre-seeds"
         static let albumDetailsAPI = "albums/"
         static let playlistDetailsAPI = "playlists/"
+        static let categoriesAPI = "browse/categories"
     }
     
     enum HTTPMethod: String {
@@ -165,7 +166,7 @@ final class APICaller {
         }
     }
     
-    /// Get recommeded genres with an API call
+    /// Get recommeded genres from spotify with an API call
     public func getRecomendedGenres(completion: @escaping ((Result<RecommendedGenresResponse, Error>) -> Void)) {
         createRequest(with: URL(string: Constants.baseAPIurl + Constants.recomendedGenresAPI ),
                       type: .GET) { [weak self] request in
@@ -178,6 +179,49 @@ final class APICaller {
                 do {
                     let result = try JSONDecoder().decode(RecommendedGenresResponse.self, from: data)
                     completion(.success(result))
+                } catch {
+                    completion(.failure(error))
+                }
+            }
+            task.resume()
+        }
+    }
+    
+    /// Get categories from spotify with an API call
+    public func getCategories(completion: @escaping (Result<[Category], Error>) -> Void) {
+        createRequest(with: URL(string: Constants.baseAPIurl + Constants.categoriesAPI + "?limit=50&locale=en_us"),
+                      type: .GET) { [weak self] request in
+            guard self != nil else { return }
+            let task = URLSession.shared.dataTask(with: request) { data, _, error in
+                guard let data = data, error == nil else {
+                    completion(.failure(APIError.failedToGetData))
+                    return
+                }
+                do {
+                    let result = try JSONDecoder().decode(AllCategoriesResponse.self, from: data)
+                    completion(.success(result.categories.items))
+                } catch {
+                    completion(.failure(error))
+                }
+            }
+            task.resume()
+        }
+    }
+    
+    /// Get playlists from spotify category with an API call
+    public func getCategoriePlaylists(category: Category, completion: @escaping (Result<[Playlist], Error>) -> Void) {
+        let url = Constants.baseAPIurl + Constants.categoriesAPI + "/\(category.id)/playlists?limit=50&locale=en_us"
+        createRequest(with: URL(string: url),
+                      type: .GET) { [weak self] request in
+            guard self != nil else { return }
+            let task = URLSession.shared.dataTask(with: request) { data, _, error in
+                guard let data = data, error == nil else {
+                    completion(.failure(APIError.failedToGetData))
+                    return
+                }
+                do {
+                    let result = try JSONDecoder().decode(CategoryPlaylistsResponse.self, from: data)
+                    completion(.success(result.playlists.items))
                 } catch {
                     completion(.failure(error))
                 }

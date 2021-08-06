@@ -7,9 +7,9 @@
 
 import UIKit
 
-class FeaturedPlaylistCollectionViewCell: UICollectionViewCell {
+class PlaylistCollectionViewCell: UICollectionViewCell {
     
-    static let identifier = "FeaturedPlaylistCollectionViewCell"
+    static let identifier = "PlaylistCollectionViewCell"
     
     private let playlistCoverImageView: UIImageView = {
         let imageView = UIImageView()
@@ -83,7 +83,7 @@ class FeaturedPlaylistCollectionViewCell: UICollectionViewCell {
         playlistCoverImageView.image = nil
     }
     
-    func configure(with viewModel: FeaturedPlaylistCellViewModel) {
+    func configure(with viewModel: PlaylistCellViewModel) {
         playlistNameLabel.text = viewModel.name
         creatorNameLabel.text = viewModel.creatorName
         playlistCoverImageView.sd_setImage(with: viewModel.artworkURL, completed: nil)
